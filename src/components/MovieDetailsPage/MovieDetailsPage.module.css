@@ -1,0 +1,43 @@
+.movieDetails{
+    display: flex;   
+    margin-top: 20px;
+}
+
+.img{
+    width: 200px;
+    
+}
+
+.descMovie{
+    margin-left:20px;
+    text-align: left;
+}
+
+.reviews{
+    display: flex;
+    margin: 20px 0;
+
+    text-align: left;
+}
+
+.reviews > a {
+border: 1px solid var(--brand-color);
+width: 100px;
+padding: 10px;
+text-decoration: none;
+text-align: center;
+display: block;
+border-radius: 5px;
+}
+.reviews > a:not(:first-child) {
+
+    margin-left: 20px;
+}
+
+@media screen and (min-width: 768px) {
+.img {
+        width: 300px;
+
+    }
+}
+

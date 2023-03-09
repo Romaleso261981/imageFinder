@@ -1,0 +1,14 @@
+    .title{
+        margin-bottom: 20px;
+    }
+    img{
+        border-radius: 5px;
+    }
+    h2{
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    a{
+        text-decoration: none;
+    }

@@ -1,0 +1,31 @@
+.avatar{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    
+    background-size: cover;
+}
+
+.authorReview{
+    display: flex;
+    align-items: center;
+}
+
+.authorReview > h3 {
+    margin-left: 20px;
+}
+
+.authorReview > p {
+text-align: left;
+}
+
+.cardList > li {
+    margin-top: 20px;
+}
+
+.cardReview{
+    border: 1px solid grey;
+    padding: 10px;
+    border-radius: 5px;
+}

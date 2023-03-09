@@ -1,0 +1,12 @@
+input{    
+    min-width: 400px;
+    height: 30px;
+}
+button{
+    padding: 6px;
+    width: 100px;
+}
+
+.form{
+    margin-bottom: 20px;
+}
