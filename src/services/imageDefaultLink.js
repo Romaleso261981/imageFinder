@@ -1,1 +1,0 @@
-export const imageDefaultLink = "https://image.tmdb.org/t/p/w500";

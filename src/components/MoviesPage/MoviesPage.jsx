@@ -1,64 +1,31 @@
-// import { CardMovie } from "components/MoviesList/CardMovie";
-// import MoviesList from "components/MoviesList/MoviesList";
-// import { useState, useEffect } from "react";
-// import { useLocation, useSearchParams } from "react-router-dom";
-// import * as API from '../../services/API';
-// import styles from './MoviesPage.module.css';
+import { Outlet, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { getTrendingMovies } from '../../services/API';
+import MoviesList from '../MoviesList/MoviesList';
+import { CardMovie } from '../MoviesList/CardMovie';
+import styles from './MoviesPage.module.css';
 
-// function MoviesPage() {
-//     const [searchParams, setSearchParams] = useSearchParams()
-//     const [inputValue, setInputValue] = useState('');
-//     const [searchValue, setSearchValue] = useState(null);
-//     const [data, setData] = useState(null);
-//     const {pathname, search} = useLocation()
+function HomePage() {
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const { pathname, search } = useLocation();
+  const currenUrl = `${pathname}${search}`;
 
-//     const currenUrl = `${pathname}${search}`;
+  useEffect(() => {
+    getTrendingMovies(page).then(data => setData(data.results));
+  }, [page]);
 
-//     const handleChange = (event) => {
-//         setInputValue(event.currentTarget.value);
-//     } 
+  return (
+    <>
+      <h2 className={styles.title}>Trending today</h2>
+      <MoviesList page={page} setPage={setPage}>
+        {data.map(({ id, name, image }) => {
+          return <CardMovie key={id} id={id} title={name} poster={image} />;
+        })}
+        <Outlet />
+      </MoviesList>
+    </>
+  );
+}
 
-//     const handleSubmit = (event) => {
-//         event.preventDefault();
-//         setSearchValue(inputValue);
-//         setSearchParams({...searchParams, query: inputValue });
-//         setInputValue('');
-//     }
-
-//     useEffect(()=> {
-//         if (search) {
-//             const query = searchParams.get('query')
-//             API.getSearchMovies(query).then((response) => setData(response.results))
-//         }
-//     },[])
-
-//     useEffect(() => {
-//         if (searchValue) {
-//             API.getSearchMovies(searchValue).then((response) => setData(response.results));
-//         }
-//     }, [searchValue]);
-
-//     return (
-//         <>
-//         <form className={styles.form} onSubmit={handleSubmit}>
-//             <input type="text" name="search" value={inputValue} onChange={handleChange}/>
-//             <button type="submit">Search</button>
-//         </form>
-//             {data &&               
-//             <MoviesList>
-//                 {data.map(({id, title, poster_path}) => {
-//                     return <CardMovie
-//                         key={id}    
-//                         state={currenUrl}
-//                         id={id}
-//                         title={title}
-//                         poster={poster_path} />
-                    
-//                 })} 
-//             </MoviesList> 
-//         }
-//         </>                
-//     )
-// }
-
-// export default MoviesPage;
+export default HomePage;

@@ -10,7 +10,9 @@ function MoviesList({ children, page, setPage }) {
   return (
     <>
       <ul className={styles.movieList}>{children}</ul>
-      <Btn text="load more" onClick={loadMore} />
+      <div className={styles.btnWrapper}>
+        <Btn text="load more" onClick={loadMore} />
+      </div>
     </>
   );
 }

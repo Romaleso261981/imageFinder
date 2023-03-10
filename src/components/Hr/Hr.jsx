@@ -1,7 +1,5 @@
 import styles from './Hr.module.css';
 
-export function Hr({mt, mb}) {
-    return (
-        <hr className={styles.hr}></hr>
-    )
+export function Hr() {
+  return <hr className={styles.hr}></hr>;
 }
