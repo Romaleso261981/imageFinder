@@ -14,7 +14,6 @@ export function CardMovie({ state, id, title, poster }) {
 }
 
 CardMovie.propTypes = {
-  state: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   poster: PropTypes.string,

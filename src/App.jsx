@@ -1,8 +1,10 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
+import { theme, darkTheme } from '../src/components/utils/theme';
 import { lazy, Suspense } from 'react';
-import Notiflix from 'notiflix';
+import { ThemeProvider } from 'styled-components';
+// import Notiflix from 'notiflix';
 // import { Audio } from 'react-loader-spinner';
 
 const HomePage = lazy(() =>
@@ -24,36 +26,40 @@ const Cast = lazy(() =>
 );
 
 function App() {
+  // const selectedMode = useSelector(getMode);
+  //  const themeMode = selectedMode.mode === 'light' ? darkTheme : theme;
+  const themeMode = theme;
   return (
-    <div className="App">
-      <Navigation />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Suspense fallback={<div>Loading...</div>}>
-              <HomePage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/movies"
-          element={
-            <Suspense fallback={<div>Loading...</div>}>
-              <MoviesPage />
-            </Suspense>
-          }
-        />
+    <ThemeProvider theme={themeMode}>
+      <div className="App">
+        <Navigation />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <HomePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/movies"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <MoviesPage />
+              </Suspense>
+            }
+          />
 
-        <Route
-          path="/movies/:movieId"
-          element={
-            <Suspense fallback={<div>Loading...</div>}>
-              <MovieDetailsPage />
-            </Suspense>
-          }
-        />
-        {/* <Route
+          <Route
+            path="/movies/:movieId"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <MovieDetailsPage />
+              </Suspense>
+            }
+          />
+          {/* <Route
             path="/movies/:movieId/cast"
             element={
               <Suspense fallback={<div>Loading...</div>}>
@@ -61,7 +67,7 @@ function App() {
               </Suspense>
             }
           /> */}
-        {/* <Route
+          {/* <Route
             path="/movies/:movieId/reviews"
             element={
               <Suspense fallback={<div>Loading...</div>}>
@@ -70,8 +76,9 @@ function App() {
             }
           />
         </Route> */}
-      </Routes>
-    </div>
+        </Routes>
+      </div>
+    </ThemeProvider>
   );
 }
 

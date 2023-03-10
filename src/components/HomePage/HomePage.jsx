@@ -1,4 +1,4 @@
-import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getTrendingMovies } from '../../services/API';
 import MoviesList from '../MoviesList/MoviesList';
@@ -7,29 +7,21 @@ import styles from './HomePage.module.css';
 
 function HomePage() {
   const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
   const { pathname, search } = useLocation();
   const currenUrl = `${pathname}${search}`;
 
   useEffect(() => {
-    getTrendingMovies().then(data => setData(data.results));
-  }, []);
+    getTrendingMovies(page).then(data => setData(data.results));
+  }, [page]);
 
-  const url = useNavigate();
-  console.log(url);
+ 
   return (
     <>
       <h2 className={styles.title}>Trending today</h2>
-      <MoviesList>
+      <MoviesList page={page} setPage={setPage}>
         {data.map(({ id, name, image }) => {
-          return (
-            <CardMovie
-              key={id}
-              state={currenUrl}
-              id={id}
-              title={name}
-              poster={image}
-            />
-          );
+          return <CardMovie key={id} id={id} title={name} poster={image} />;
         })}
         <Outlet />
       </MoviesList>
