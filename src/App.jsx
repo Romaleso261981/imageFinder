@@ -1,8 +1,9 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
+import { getTrendingMovies } from './services/API';
 import { theme, darkTheme } from './utils/theme';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 // import Notiflix from 'notiflix';
 import { Louder } from './components/louder/Louder';
@@ -14,6 +15,13 @@ const MovieDetailsPage = lazy(() => import('./components/MovieDetailsPage'));
 function App() {
   // const selectedMode = useSelector(getMode);
   //  const themeMode = selectedMode.mode === 'light' ? darkTheme : theme;
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    getTrendingMovies(page).then(data => setData(data.results));
+  }, [page]);
+
   const themeMode = theme;
   return (
     <ThemeProvider theme={themeMode}>
@@ -32,7 +40,7 @@ function App() {
             path="/movies"
             element={
               <Suspense fallback={<Louder />}>
-                <MoviesPage />
+                <MoviesPage data={data} setPage={setPage} page={page} />
               </Suspense>
             }
           />
