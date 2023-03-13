@@ -1,11 +1,9 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import MoviesList from '../MoviesList/MoviesList';
 import { CardMovie } from '../MoviesList/CardMovie';
 import styles from './MoviesPage.module.css';
 
 function HomePage({ setPage, page, data, sortedItems }) {
-  // const { pathname, search } = useLocation();
-  // const currenUrl = `${pathname}${search}`;
 
   return (
     <>
