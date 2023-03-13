@@ -1,17 +1,19 @@
 import styles from './MoviesList.module.css';
 import { Btn } from '../Buttons/Btn';
 
-function MoviesList({ children, page, setPage }) {
+function MoviesList({ children, page, setPage, data, sortedItems }) {
   const loadMore = () => {
     page += 1;
     setPage(page);
     console.log(page);
   };
+
+  const isShow = sortedItems ? sortedItems : data;
   return (
     <>
       <ul className={styles.movieList}>{children}</ul>
       <div className={styles.btnWrapper}>
-        <Btn text="load more" onClick={loadMore} />
+        {isShow && <Btn text="load more" onClick={loadMore} />}
       </div>
     </>
   );
