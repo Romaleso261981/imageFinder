@@ -68,7 +68,7 @@ export const AuthForm = ({
     }
     if (formTitle === 'login') {
       dispatch(logIn({ email, password }));
-      navigate('/movies');
+      navigate('/');
     } else {
       dispatch(Register({ email, password }));
       navigate('/');

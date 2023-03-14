@@ -1,22 +1,28 @@
+import { useNavigate } from 'react-router';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Notiflix from 'notiflix';
 import { toast } from 'react-toastify';
-import { notifySettings } from '../';
-import { AUTH_API } from '../';
+import { notifySettings } from '../../utils/notifySettings';
+import { AUTH_API } from '../../AUSAPI';
 
 const Register = createAsyncThunk('auth/register', async credentials => {
   try {
     console.log('Register');
-    // const data = await axios.post('/api/finances/add', credentials);
-    // return data;
+    const data = await AUTH_API.post('/register', credentials);
+    console.log(data);
+    return data;
   } catch (error) {
     toast.error('Server error, please try again later');
   }
 });
 
-const logIn = createAsyncThunk('auth/login', async (userData, thunkAPI) => {
+const logIn = createAsyncThunk('auth/login', async credentials => {
+  console.log('logIn');
   try {
-    console.log('logIn');
+     console.log('logIn');
+     const data = await AUTH_API.post('/logIn', credentials);
+     console.log(data);
+     return data;
   } catch (error) {
     const state = thunkAPI.getState();
     const { lang } = state.language.lang;
@@ -79,17 +85,4 @@ const refreshUser = createAsyncThunk(
   },
 );
 
-const googleAuth = createAsyncThunk(
-  'auth/googleAuth',
-  async (credentials, { rejectWithValue }) => {
-    try {
-      // const { data } = await API.post("/auth/google", credentials);
-      // authToken.set(data.accessToken);
-      // return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  },
-);
-
-export { Register, logIn, logOut, refreshUser, googleAuth };
+export { Register, logIn, logOut, refreshUser };

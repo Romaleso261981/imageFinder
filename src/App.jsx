@@ -3,8 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigation } from './components/Navigation';
 import { getTrendingMovies } from './services/API';
-import { theme, darkTheme } from './utils/theme';
-import { selectIsLoggedIn } from './redux/auth/selectors';
+import { theme } from './utils/theme';
+import { selectAccessToken } from './redux/auth/selectors';
 import { lazy, Suspense, useState, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { Louder } from './components/louder/Louder';
@@ -23,9 +23,12 @@ const MovieDetailsPage = lazy(() =>
 );
 
 function App() {
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const AccessToken = useSelector(selectAccessToken);
+  // const AccessToken = 125454545;
+  console.log(AccessToken);
 
   const { enteredSearchValue, setEnteredSearchValue, availableItems } =
     useFilter(data, 'title');
@@ -37,15 +40,10 @@ function App() {
 
   useEffect(() => {
     getTrendingMovies(page).then(data => setData(data.results));
-  }, [page]);
+  }, [page, AccessToken]);
 
-  const PrivateRoute = ({ children, isLoggedIn }) => {
-    console.log(isLoggedIn);
-    return isLoggedIn ? children : <Navigate to="/" />;
-  };
-
-  const PublicRoute = ({ children, isLoggedIn }) => {
-    return isLoggedIn ? children : <Navigate to="/register" />;
+  const PrivateRoute = ({ children, token }) => {
+    return token ? children : <Navigate to="/login" />;
   };
 
   const themeMode = theme;
@@ -63,27 +61,7 @@ function App() {
             path="/"
             element={
               <Suspense fallback={<Louder />}>
-                <PublicRoute isLoggedIn={!isLoggedIn}>
-                  <LoginPage />
-                </PublicRoute>
-              </Suspense>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <Suspense fallback={<Louder />}>
-                <PublicRoute isLoggedIn={!isLoggedIn}>
-                  <RegisterPage />
-                </PublicRoute>
-              </Suspense>
-            }
-          />
-          <Route
-            path="/movies"
-            element={
-              <Suspense fallback={<Louder />}>
-                <PrivateRoute isLoggedIn={isLoggedIn}>
+                <PrivateRoute token={AccessToken}>
                   <MoviesPage
                     data={sortedItems ? sortedItems : data}
                     setPage={setPage}
@@ -95,12 +73,26 @@ function App() {
             }
           />
           <Route
+            path="/login"
+            element={
+              <Suspense fallback={<Louder />}>
+                <LoginPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <Suspense fallback={<Louder />}>
+                <RegisterPage />
+              </Suspense>
+            }
+          />
+          <Route
             path="/movies/:movieId"
             element={
               <Suspense fallback={<Louder />}>
-                <PrivateRoute isLoggedIn={isLoggedIn}>
-                  <MovieDetailsPage />
-                </PrivateRoute>
+                <MovieDetailsPage />
               </Suspense>
             }
           />

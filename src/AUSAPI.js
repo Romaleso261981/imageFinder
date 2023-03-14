@@ -1,18 +1,18 @@
 import axios from 'axios';
 
 const AUTH_API = axios.create({
-  baseURL: 'http://185.233.118.244:8080/user',
-  mode: 'cors',
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
+  // baseURL: 'http://185.233.118.244:8080/auth',
+  // mode: 'cors',
+  // headers: {
+  //   Accept: 'application/json',
+  //   'Content-Type': 'application/json',
+  // },
 
-  // baseURL: "http://localhost:8080/user",
+  baseURL: "http://localhost:8080/auth",
 });
 
 
-API.interceptors.response.use(
+AUTH_API.interceptors.response.use(
   response => response,
   async error => {
     console.log('interceptors');
