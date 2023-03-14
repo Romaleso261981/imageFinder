@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
-import { BackBtn } from '../BackBtn';
-import * as API from '../../services/API';
+import { BackBtn } from '../../BackBtn';
+import * as API from '../../../services/API';
 import styles from './MovieDetailsPage.module.css';
 
 function MovieDetailsPage() {

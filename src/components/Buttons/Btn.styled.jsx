@@ -7,9 +7,6 @@ export const BtnElement = styled.button`
   min-width: 116px;
   min-height: 44px;
   font-family: inherit;
-  margin-top: 15px;
-  margin-left: auto;
-  margin-right: auto;
   font-style: normal;
   font-weight: ${props => (props.status === 'google' ? '500' : '700')};
   font-size: 12px;
@@ -29,26 +26,22 @@ export const BtnElement = styled.button`
   border: 2px solid ${props => props.theme.colors.btnsBorder};
   filter: drop-shadow(1px 3px 5px rgba(82, 85, 95, 0.15));
   cursor: pointer;
-
   &:hover,
   &:focus {
     color: white;
     background-color: ${p => p.theme.colors.PrimaryOrange};
     filter: drop-shadow(1px 3px 5px rgba(255, 107, 8, 0.35));
   }
-
   &:active {
     background-color: ${p => p.theme.colors.PrimaryOrange};
     color: white;
     filter: drop-shadow(1px 3px 5px rgba(255, 107, 8, 0.35));
   }
-
   & > svg {
     margin-right: 10px;
     width: 18px;
     height: 18px;
   }
-
   @media screen and (min-width: 768px) {
     min-width: 122px;
   }

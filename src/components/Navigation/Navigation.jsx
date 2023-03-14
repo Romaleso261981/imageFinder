@@ -9,6 +9,13 @@ export function Navigation({
   sortMode,
   setSortMode,
 }) {
+  // const user = {
+  //   email: 'ladiginscormag@gmail.com',
+  //   password: 123456,
+  // };
+
+  const user = null;
+
   return (
     <header className={styles.header}>
       <nav className={styles.navigation}>
@@ -19,12 +26,14 @@ export function Navigation({
           Movies
         </NavLink>
       </nav>
-      <SearchBar
-        enteredSearchValue={enteredSearchValue}
-        setEnteredSearchValue={setEnteredSearchValue}
-        sortMode={sortMode}
-        setSortMode={setSortMode}
-      />
+      {user && (
+        <SearchBar
+          enteredSearchValue={enteredSearchValue}
+          setEnteredSearchValue={setEnteredSearchValue}
+          sortMode={sortMode}
+          setSortMode={setSortMode}
+        />
+      )}
       <Hr />
     </header>
   );

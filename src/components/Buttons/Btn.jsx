@@ -1,12 +1,12 @@
-import PropTypes from "prop-types";
-import { BtnElement, BtnText } from "./Btn.styled";
+import PropTypes from 'prop-types';
+import { BtnElement, BtnText } from './Btn.styled';
 
 export const Btn = ({
   text,
   status,
   disabled = false,
   icon: Icon = null,
-  type = "button",
+  type = 'button',
   onClick = null,
 }) => {
   return (
