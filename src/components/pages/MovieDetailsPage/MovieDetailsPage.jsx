@@ -4,13 +4,18 @@ import { BackBtn } from '../../BackBtn';
 import * as API from '../../../services/API';
 import styles from './MovieDetailsPage.module.css';
 
-function MovieDetailsPage() {
-  const { state } = useLocation();
+function MovieDetailsPage(props) {
+  // const { state } = useLocation();
   const [data, setData] = useState(null);
-  const movieId = useParams().movieId;
+  const title = props.title;
+  const poster = useParams().poster;
+  const Id = useParams().Id;
+  console.log(Id);
+  console.log(title);
+  console.log(poster);
 
   useEffect(() => {
-    API.getMovieById(movieId).then(setData);
+    API.getMovieById(Id).then(setData);
   }, []);
 
   return (

@@ -1,11 +1,7 @@
-import { Link, useLocation } from 'react-router-dom';
-import styles from './BackBtn.module.css';
+import { useLocation } from 'react-router-dom'
+import {BackBtnStyled} from './BackBtn.styled';
 
 export function BackBtn() {
   const { state } = useLocation();
-  return (
-    <Link className={styles.backBtn} to={state ? state : '/movies'}>
-      Go back
-    </Link>
-  );
+  return <BackBtnStyled to={state ? state : '/movies'}>Go back</BackBtnStyled>;
 }

@@ -1,39 +1,21 @@
 import { NavLink } from 'react-router-dom';
 import { Hr } from '../Hr';
-import { SearchBar } from '../SearchBar/SearchBar';
-import styles from './Navigation.module.css';
+import { NavigationWrapp } from './Navigation.styled';
 
-export function Navigation({
-  enteredSearchValue,
-  setEnteredSearchValue,
-  sortMode,
-  setSortMode,
-}) {
-  // const user = {
-  //   email: 'ladiginscormag@gmail.com',
-  //   password: 123456,
-  // };
-
+export function Navigation() {
   const user = null;
 
   return (
-    <header className={styles.header}>
-      <nav className={styles.navigation}>
-        <NavLink to="/" className={styles.navLink}>
+    <header>
+      <NavigationWrapp>
+        <NavLink to="/" >
           Home
         </NavLink>
-        <NavLink to="/movies" className={styles.navLink}>
+        <NavLink to="/movies">
           Movies
         </NavLink>
-      </nav>
-      {user && (
-        <SearchBar
-          enteredSearchValue={enteredSearchValue}
-          setEnteredSearchValue={setEnteredSearchValue}
-          sortMode={sortMode}
-          setSortMode={setSortMode}
-        />
-      )}
+      </NavigationWrapp>
+
       <Hr />
     </header>
   );

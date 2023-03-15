@@ -1,4 +1,4 @@
-import styles from './MoviesList.module.css';
+import { MovieList, BtnWrapper } from './MoviesList.styled';
 import { Btn } from '../Buttons/Btn';
 
 function MoviesList({ children, page, setPage, data, sortedItems }) {
@@ -11,10 +11,10 @@ function MoviesList({ children, page, setPage, data, sortedItems }) {
   const isShow = sortedItems ? sortedItems : data;
   return (
     <>
-      <ul className={styles.movieList}>{children}</ul>
-      <div className={styles.btnWrapper}>
+      <MovieList>{children}</MovieList>
+      <BtnWrapper>
         {isShow && <Btn text="load more" onClick={loadMore} />}
-      </div>
+      </BtnWrapper>
     </>
   );
 }

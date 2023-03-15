@@ -46,5 +46,3 @@ export const FormContainer = styled.div`
     }
   }
 `;
-
-export default FormContainer;

@@ -1,82 +1,101 @@
 import './App.css';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  Navigate,
+  useSearchParams,
+  useNavigate,
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigation } from './components/Navigation';
-import { getTrendingMovies } from './services/API';
 import { theme } from './utils/theme';
 import { selectAccessToken } from './redux/auth/selectors';
+import { refreshUser } from './redux/auth/operations';
+import { getLang } from './redux/theme/themeSelector';
+import { getTrendingMovies } from './services/API';
+import { getMode } from './redux/theme/themeSelector';
 import { lazy, Suspense, useState, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { Louder } from './components/louder/Louder';
 import { useFilter } from './hooks/filter';
 import { useSort } from './hooks/sort';
 
+const Layout = lazy(() => import('./components/Layout/Layout'));
 const LoginPage = lazy(() => import('./components/pages/LoginPage/LoginPage'));
 const RegisterPage = lazy(() =>
   import('./components/pages/RegisterPage/RegisterPage'),
 );
-const MoviesPage = lazy(() =>
-  import('./components/pages/MoviesPage/MoviesPage'),
-);
+const Movies = lazy(() => import('./components/pages/MoviesPage/MoviesPage'));
 const MovieDetailsPage = lazy(() =>
   import('./components/pages/MovieDetailsPage/MovieDetailsPage'),
 );
 
-function App() {
+const PrivateRoute = ({ children, token }) => {
+  return token ? children : <Navigate to="/" />;
+};
+
+const PublicRoute = ({ children, token }) => {
+  return !token ? children : <Navigate to="/Movies" />;
+};
+
+export function App() {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
-  const AccessToken = useSelector(selectAccessToken);
-  // const AccessToken = 125454545;
-  console.log(AccessToken);
+  const [isHintShown, setIsHintShown] = useState(false);
+  // const token = useSelector(selectAccessToken);
+  const token = true;
+  const selectedMode = useSelector(getMode);
+  const themeMode = selectedMode.mode === 'light' ? darkTheme : theme;
 
-  const { enteredSearchValue, setEnteredSearchValue, availableItems } =
-    useFilter(data, 'title');
+  // const { enteredSearchValue, setEnteredSearchValue, availableItems } =
+  //   useFilter(data, 'title');
 
-  const { sortMode, setSortMode, sortedItems } = useSort(
-    availableItems,
-    'title',
-  );
+  // const { sortMode, setSortMode, sortedItems } = useSort(
+  //   availableItems,
+  //   'title',
+  // );
 
   useEffect(() => {
+    if (!token) {
+      setIsHintShown(false);
+      return;
+    }
+    dispatch(refreshUser());
     getTrendingMovies(page).then(data => setData(data.results));
-  }, [page, AccessToken]);
+    // eslint-disable-next-line/exhaustive-deps
+  }, [dispatch, page]);
 
-  const PrivateRoute = ({ children, token }) => {
-    return token ? children : <Navigate to="/login" />;
-  };
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  const themeMode = theme;
+  useEffect(() => {
+    console.log('useEffectApp');
+    const accessToken = searchParams.get('accessToken');
+    const refreshToken = searchParams.get('refreshToken');
+    const sid = searchParams.get('sid');
+    if (!accessToken) return;
+    dispatch(googleAuthUser({ accessToken, refreshToken, sid }));
+    navigate('/wallet');
+  }, [searchParams, dispatch, navigate]);
+
   return (
     <ThemeProvider theme={themeMode}>
-      <div className="App">
-        <Navigation
-          setEnteredSearchValue={setEnteredSearchValue}
-          enteredSearchValue={enteredSearchValue}
-          sortMode={setSortMode}
-          setSortMode={setSortMode}
-        />
-        <Routes>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<Louder />}>
+              <Layout data={data} />
+            </Suspense>
+          }
+        >
           <Route
-            path="/"
+            index
             element={
               <Suspense fallback={<Louder />}>
-                <PrivateRoute token={AccessToken}>
-                  <MoviesPage
-                    data={sortedItems ? sortedItems : data}
-                    setPage={setPage}
-                    page={page}
-                    sortedItems={sortedItems}
-                  />
-                </PrivateRoute>
-              </Suspense>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <Suspense fallback={<Louder />}>
-                <LoginPage />
+                <PublicRoute token={token}>
+                  <LoginPage />
+                </PublicRoute>
               </Suspense>
             }
           />
@@ -84,22 +103,36 @@ function App() {
             path="/register"
             element={
               <Suspense fallback={<Louder />}>
-                <RegisterPage />
+                <PublicRoute token={token}>
+                  <RegisterPage />
+                </PublicRoute>
               </Suspense>
             }
           />
           <Route
-            path="/movies/:movieId"
+            path="/Movies"
             element={
               <Suspense fallback={<Louder />}>
-                <MovieDetailsPage />
+                <PrivateRoute token={token}>
+                  <Movies data={data} />
+                </PrivateRoute>
               </Suspense>
             }
           />
-        </Routes>
-      </div>
+          <Route
+            path="/Movies/:id"
+            element={
+              <Suspense fallback={<Louder />}>
+                <PrivateRoute token={token}>
+                  <MovieDetailsPage />
+                </PrivateRoute>
+              </Suspense>
+            }
+          />
+          <Route path="*" element={<h1>Невірно прописаний шлях</h1>} />
+        </Route>
+      </Routes>
     </ThemeProvider>
   );
 }
-
 export default App;

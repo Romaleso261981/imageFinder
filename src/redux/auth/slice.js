@@ -5,8 +5,9 @@ import { Register, logIn, logOut, refreshUser } from './operations';
 export const initialState = {
   user: {
     email: '',
-    accessToken: null,
   },
+
+  accessToken: null,
   error: null,
   isLoading: true,
   isLoggedIn: false,
